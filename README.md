@@ -7,6 +7,7 @@
 ## 🚀 **Overview**
 This repository contains an **Audio-Visual Classification Framework** designed to handle **Uncertain Missing Modality** scenarios where missing modalities are unpredictable at test time. Our approach integrates **Prompt Learning** at both the **Input Level** and **Attention Level**, allowing the model to dynamically adapt to missing or noisy modalities.
 
+
 ## 🔥 **Key Contributions**
 - **✅ End-to-End Framework for Uncertain Missing Modality**
   - Designed to handle **unpredictable modality loss** by training across multiple missing modality scenarios.
@@ -17,72 +18,54 @@ This repository contains an **Audio-Visual Classification Framework** designed t
 - **📈 Performance Improvement**
   - Outperforms Fine-Tuning in **noisy and missing modality environments** by up to **10%**.
 
----
-
-## 📌 **Motivation**
-### **Challenges in Audio-Visual Classification**
-Multimodal classification models often face:
-- **❌ Missing Modality** (Sensor failure, transmission issues)
-- **🔊 Noise** (Background noise, corrupted video frames)
-- **🔄 Uncertain Missing Modality** (Test-time unpredictability in missing data)
-
-### **Why Prompt Learning?**
-Traditional **Fine-Tuning** adjusts all model parameters, making it computationally expensive. Instead, **Prompt Learning**:
-- **Efficiently updates only learnable prompt tokens** (low memory & fast training)
-- **Enhances modality interaction**, compensating for missing or noisy data.
 
 ---
 ## ⚙️ **Framework Overview**
 ![image](https://github.com/user-attachments/assets/0e39ca01-fa8f-40a0-98b3-2634118be8f9)
 
-The framework is designed to address **Uncertain Missing Modality** scenarios using a robust integration of **learnable prompt tokens** at both the input and attention levels. This allows the model to adaptively handle incomplete or noisy data across modalities while maintaining computational efficiency.
+The framework addresses **Uncertain Missing Modality** scenarios through a robust integration of **learnable prompt tokens** at both the input and attention levels. This design allows the model to adaptively handle incomplete or noisy data across modalities while maintaining computational efficiency.
+
 
 
 ### **1️⃣ Input-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/45f46dbf-0446-40fe-a42b-06257a1dc56a)
 
-At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism allows the model to embed prior knowledge about modality-specific patterns (e.g., noise or missing data) directly into the input representation.
-- The prompts act as auxiliary inputs that encode modality-specific signals, such as noise patterns or missing modality indicators.
-- Ensures each modality's encoder processes enriched inputs with context about the data's state.
-
+At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism embeds prior knowledge about modality-specific patterns (e.g., noise or missing data) into the input representation.
+- **Key Benefits**:
+  - Prompts encode modality-specific signals like noise patterns or missing data indicators.
+  - Each modality's encoder processes enriched inputs with context about the data's state.
 
 ### **2️⃣ Attention-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/9b85d6c3-79b6-4c86-9271-53bbc0995710)
 
-Prompts from the **Input Level** stage are utilized as **Key** and **Value** inputs in the **Cross-Attention** mechanism during the fusion phase. This integration enables enhanced interaction between audio and visual modalities by leveraging both learnable tokens and modality-specific embeddings.
-- **Enhanced Cross-Modal Information Flow**:
-  - Prompts ensure that missing or noisy modality information is supplemented by the complementary modality.  
-  - This improves the robustness of the model, especially in **Uncertain Missing Modality** scenarios where one or both modalities might be degraded or unavailable.
-- **Robust Feature Alignment**: 
-  - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
-  - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
-- Utilizes trained prompts through input-level as Key and Value in cross-attention mechanisms for modality interaction.
-  - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
-  - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
-      - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
-      - Learnable prompt tokens from the **Input Level Integration**.      
+Prompts from the **Input Level** stage are used as **Key** and **Value** inputs in the **Cross-Attention** mechanism during the fusion phase. This enables enhanced interaction between audio and visual modalities by leveraging learnable tokens and modality-specific embeddings.
+- **Key Benefits**:
+  - Prompts ensure missing or noisy modality information is supplemented by the complementary modality.
+  - Facilitate robust feature alignment, strengthening shared representations even when one modality is compromised.
+- **Mechanism Highlights**:
+  - **Query**: Originates from one modality's embeddings (e.g., audio for Audio-to-Visual attention).
+  - **Key & Value**: Combines corresponding modality embeddings and learnable prompt tokens.
 
 
 ### **3️⃣ Fusion Module**
 ![image](https://github.com/user-attachments/assets/b0ef7f20-3609-4b5b-b155-3d8c06de015d)
 
-The Fusion Module introduces **Cross-Attention** layers to effectively balance contributions from both modalities. This module resolves the natural imbalance caused by varying sequence lengths and noise levels in audio and visual data.
-- Aligns features from different modalities, ensuring mutual reinforcement and minimizing bias toward any single modality.
-- Handles discrepancies in sequence lengths (e.g., longer audio sequences vs. shorter visual sequences) through flexible attention mechanisms.
-  
+The Fusion Module introduces **Cross-Attention** layers to balance contributions from both modalities. This module resolves imbalances caused by varying sequence lengths and noise levels in audio and visual data.
+- **Key Benefits**:
+  - Aligns features from different modalities for mutual reinforcement.
+  - Handles discrepancies in sequence lengths (e.g., longer audio vs. shorter visual sequences).
 - **Structure**:
-  - Two separate **Cross-Attention layers**:
-    - **Visual-to-Audio**: Visual embeddings are used as queries to retrieve relevant information from audio embeddings and their associated prompts.
-    - **Audio-to-Visual**: Audio embeddings serve as queries to access complementary visual features and their prompts.
+  - **Visual-to-Audio Attention**: Visual embeddings query audio embeddings and associated prompts.
+  - **Audio-to-Visual Attention**: Audio embeddings query visual embeddings and their prompts.
 
 ### **4️⃣ Prompt Token Integration (Input + Attention Combination)**
 ![image](https://github.com/user-attachments/assets/7974afdc-a974-4622-a173-56e8684f6dde)
 
-Combines the strengths of Input-Level and Attention-Level Integration:
-- At the Input Level, learnable tokens enhance input representations with prior knowledge about noise and modality-specific characteristics.
-- At the Attention Level, these tokens guide cross-modal interactions by acting as Key and Value inputs in the Fusion Module.
+This unified approach combines strengths from both Input-Level and Attention-Level Integration:
+- At the **Input Level**, learnable tokens enhance input representations with prior knowledge about noise and modality-specific characteristics.
+- At the **Attention Level**, these tokens guide cross-modal interactions as Key and Value inputs in the Fusion Module.
 
-This unified approach ensures robust multimodal processing under uncertain conditions, such as noisy or missing modalities.
+This combination ensures robust multimodal processing under uncertain conditions, such as noisy or missing modalities.
 
 ---
 
