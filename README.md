@@ -51,17 +51,25 @@ At the input stage, **learnable prompt tokens** are concatenated directly with t
 ### **2️⃣ Attention-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/9b85d6c3-79b6-4c86-9271-53bbc0995710)
 
-Prompts are incorporated into **Cross-Attention layers** during the fusion phase. These prompts serve as **Key** and **Value** inputs in the attention mechanism, enabling enhanced interaction between audio and visual modalities.
+Prompts from the **Input Level** stage are utilized as **Key** and **Value** inputs in the **Cross-Attention** mechanism during the fusion phase. This integration enables enhanced interaction between audio and visual modalities by leveraging both learnable tokens and modality-specific embeddings.
 
 - **Why it matters**:
-  - Prompts improve information flow between modalities, ensuring that missing or noisy inputs are supplemented by the available modality.
-  - Facilitates robust feature alignment, especially in noisy or incomplete scenarios.
-
+  - **Enhanced Cross-Modal Information Flow**:
+   - Prompts ensure that missing or noisy modality information is supplemented by the complementary modality.  
+   - This improves the robustness of the model, especially in **Uncertain Missing Modality** scenarios where one or both modalities might be degraded or unavailable.
+  - **Dynamic Attention Weight Adjustment**:
+   - By including prompts in the attention mechanism, the model dynamically adjusts attention weights based on the **quality** and **completeness** of input data.  
+   - This allows the model to prioritize the modality with better signal quality while still leveraging noisy or incomplete features.
+  - **Robust Feature Alignment**: 
+   - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
+   - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
 - **Key Highlights**:
-  - **Query**: Comes from one modality (e.g., audio embeddings).
+  - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
   - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
-  - Enables dynamic adjustment of attention weights based on the quality and completeness of input data.
-
+     - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
+     - Learnable prompt tokens from the **Input Level Integration**.
+  - **Enhanced Fusion**:  
+   - Prompts act as contextual signals that bridge modality-specific representations, ensuring efficient cross-modal feature exchange.
 
 ### **3️⃣ Fusion Module**
 ![image](https://github.com/user-attachments/assets/b0ef7f20-3609-4b5b-b155-3d8c06de015d)
@@ -181,12 +189,7 @@ cd Uncertain-Modality-AV
 pip install -r requirements.txt
 ```
 
----
 
-## 🔍 **Future Work**
-- Extend to **other multimodal tasks** (video classification, captioning).
-- Explore **alternative prompt learning strategies** for robustness.
-- Optimize for **real-world deployment** in low-resource settings.
 
 
 
