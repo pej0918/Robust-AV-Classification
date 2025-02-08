@@ -32,31 +32,55 @@ Traditional **Fine-Tuning** adjusts all model parameters, making it computationa
 - **Enhances modality interaction**, compensating for missing or noisy data.
 
 ---
-
 ## ⚙️ **Framework Overview**
 ![image](https://github.com/user-attachments/assets/0e39ca01-fa8f-40a0-98b3-2634118be8f9)
 
-### **1️⃣ Input Level Prompt Integration**
+The framework is designed to address **Uncertain Missing Modality** scenarios using a robust integration of **learnable prompt tokens** at both the input and attention levels. This allows the model to adaptively handle incomplete or noisy data across modalities while maintaining computational efficiency.
+
+
+### **1️⃣ Input-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/45f46dbf-0446-40fe-a42b-06257a1dc56a)
 
-- Adds learnable prompt tokens to both audio & visual inputs:
-  ```python
-  # Expand and concatenate prompts with input data
-  prompt_a = self.prompt_a.expand(batch_size, -1, -1)
-  a = torch.cat((prompt_a, a), dim=1)
-  ```
+**Description**: At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism allows the model to embed prior knowledge about modality-specific patterns (e.g., noise or missing data) directly into the input representation.
 
-### **2️⃣ Attention Level Prompt Integration**
+- **Why it matters**:
+  - The prompts act as auxiliary inputs that encode modality-specific signals, such as noise patterns or missing modality indicators.
+  - Ensures each modality's encoder processes enriched inputs with context about the data's state.
+
+- **Process**:
+  - Learnable tokens (`prompt_a` for audio, `prompt_v` for visual) are **replicated to match the batch size**.
+  - Tokens are **concatenated** with the input feature embeddings before being passed to modality-specific encoders.
+
+
+### **2️⃣ Attention-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/9b85d6c3-79b6-4c86-9271-53bbc0995710)
-- Uses prompts as **Key & Value** in **Cross-Attention**:
-  ```python
-  a, _ = self.cross_attn_a_to_v(a_, v_with_prompt, v_with_prompt)
-  v, _ = self.cross_attn_v_to_a(v_, a_with_prompt, a_with_prompt)
-  ```
+
+**Description**: Prompts are incorporated into **Cross-Attention layers** during the fusion phase. These prompts serve as **Key** and **Value** inputs in the attention mechanism, enabling enhanced interaction between audio and visual modalities.
+
+- **Why it matters**:
+  - Prompts improve information flow between modalities, ensuring that missing or noisy inputs are supplemented by the available modality.
+  - Facilitates robust feature alignment, especially in noisy or incomplete scenarios.
+
+- **Key Highlights**:
+  - **Query**: Comes from one modality (e.g., audio embeddings).
+  - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
+  - Enables dynamic adjustment of attention weights based on the quality and completeness of input data.
+
 
 ### **3️⃣ Fusion Module**
 ![image](https://github.com/user-attachments/assets/b0ef7f20-3609-4b5b-b155-3d8c06de015d)
-- Implements **Cross-Attention** to balance modality contributions.
+
+**Description**: The Fusion Module introduces **Cross-Attention** layers to effectively balance contributions from both modalities. This module resolves the natural imbalance caused by varying sequence lengths and noise levels in audio and visual data.
+
+- **Why it matters**:
+  - Aligns features from different modalities, ensuring mutual reinforcement and minimizing bias toward any single modality.
+  - Handles discrepancies in sequence lengths (e.g., longer audio sequences vs. shorter visual sequences) through flexible attention mechanisms.
+
+- **Structure**:
+  - Two separate **Cross-Attention layers**:
+    - **Visual-to-Audio**: Visual embeddings are used as queries to retrieve relevant information from audio embeddings and their associated prompts.
+    - **Audio-to-Visual**: Audio embeddings serve as queries to access complementary visual features and their prompts.
+
 
 ---
 
@@ -130,12 +154,5 @@ pip install -r requirements.txt
 - Explore **alternative prompt learning strategies** for robustness.
 - Optimize for **real-world deployment** in low-resource settings.
 
----
 
-## 🤝 **Contact**
-For inquiries or collaborations, please contact **Eun-ju Park** at [your-email@example.com].  
-Contributions and pull requests are welcome! 🚀
 
----
-
-This README follows the **best GitHub formatting practices** with clear sections, code examples, and a structured explanation of your project. Let me know if you'd like to make any modifications! 🚀
