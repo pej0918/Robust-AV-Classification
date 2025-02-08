@@ -57,7 +57,7 @@ Prompts from the **Input Level** stage are utilized as **Key** and **Value** inp
   - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
   - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
 - Utilizes trained prompts through input-level as Key and Value in cross-attention mechanisms for modality interaction.
-    **Act Is..**:
+  - **Act Is..**:
     - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
     - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
        - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
@@ -75,6 +75,15 @@ The Fusion Module introduces **Cross-Attention** layers to effectively balance c
   - Two separate **Cross-Attention layers**:
     - **Visual-to-Audio**: Visual embeddings are used as queries to retrieve relevant information from audio embeddings and their associated prompts.
     - **Audio-to-Visual**: Audio embeddings serve as queries to access complementary visual features and their prompts.
+
+### **4️⃣ Prompt Token Integration (Input + Attention Combination)**
+![image](https://github.com/user-attachments/assets/7974afdc-a974-4622-a173-56e8684f6dde)
+
+Combines the strengths of Input-Level and Attention-Level Integration:
+- At the Input Level, learnable tokens enhance input representations with prior knowledge about noise and modality-specific characteristics.
+- At the Attention Level, these tokens guide cross-modal interactions by acting as Key and Value inputs in the Fusion Module.
+
+This unified approach ensures robust multimodal processing under uncertain conditions, such as noisy or missing modalities.
 
 ---
 
