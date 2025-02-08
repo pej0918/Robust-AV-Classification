@@ -57,11 +57,10 @@ Prompts from the **Input Level** stage are utilized as **Key** and **Value** inp
   - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
   - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
 - Utilizes trained prompts through input-level as Key and Value in cross-attention mechanisms for modality interaction.
-  - **Act Is..**:
-    - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
-    - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
-       - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
-       - Learnable prompt tokens from the **Input Level Integration**.      
+  - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
+  - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
+      - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
+      - Learnable prompt tokens from the **Input Level Integration**.      
 
 
 ### **3️⃣ Fusion Module**
@@ -106,14 +105,18 @@ This unified approach ensures robust multimodal processing under uncertain condi
   - 🎥 Vision Only (Noisy Audio)
   - 🎵 Audio Only (Noisy Visual)
   - ❌ Noise to Both (Noisy Audio + Visual)
-
+```python
+python train.py --dataset UrbanSound8K-AV --epochs 50 --batch_size 16 --lr 1e-4
+```
 
 ### **Evaluation : Unified Evaluation**
 ![image](https://github.com/user-attachments/assets/63c2fee6-42ed-4239-919b-d30afa48992e)
 
 - Uses **all learned prompts concatenated** to handle **Uncertain Missing Modality**.
 - All learned prompts are combined for inference, ensuring robust performance in noisy and missing modality conditions.
-
+```python
+python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
+```
 ---
 
 ## 📈 **Results**
@@ -164,29 +167,6 @@ This unified approach ensures robust multimodal processing under uncertain condi
 3. ⏰ **Training Time**:  
    - PL requires only **2.4 seconds per epoch**, a **96% reduction** compared to FT (1 minute per epoch).  
    - This efficiency is particularly critical for large-scale or real-time applications where training time is a bottleneck.
-
----
-
-## 🛠️ **Installation**
-1️⃣ Clone the repository:
-```bash
-git clone https://github.com/your-repo-name/Uncertain-Modality-AV.git
-cd Uncertain-Modality-AV
-```
-2️⃣ Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3️⃣ Training :
-```python
-python train.py --dataset UrbanSound8K-AV --epochs 50 --batch_size 16 --lr 1e-4
-```
-
-4️⃣ Eval : 
-```python
-python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
-```
 
 
 
