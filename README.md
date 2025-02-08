@@ -42,47 +42,39 @@ The framework is designed to address **Uncertain Missing Modality** scenarios us
 ![image](https://github.com/user-attachments/assets/45f46dbf-0446-40fe-a42b-06257a1dc56a)
 
 At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism allows the model to embed prior knowledge about modality-specific patterns (e.g., noise or missing data) directly into the input representation.
-
-- **Why it matters**:
-  - The prompts act as auxiliary inputs that encode modality-specific signals, such as noise patterns or missing modality indicators.
-  - Ensures each modality's encoder processes enriched inputs with context about the data's state.
+- The prompts act as auxiliary inputs that encode modality-specific signals, such as noise patterns or missing modality indicators.
+- - Ensures each modality's encoder processes enriched inputs with context about the data's state.
 
 
 ### **2️⃣ Attention-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/9b85d6c3-79b6-4c86-9271-53bbc0995710)
 
 Prompts from the **Input Level** stage are utilized as **Key** and **Value** inputs in the **Cross-Attention** mechanism during the fusion phase. This integration enables enhanced interaction between audio and visual modalities by leveraging both learnable tokens and modality-specific embeddings.
+- **Enhanced Cross-Modal Information Flow**:
+  - Prompts ensure that missing or noisy modality information is supplemented by the complementary modality.  
+  - This improves the robustness of the model, especially in **Uncertain Missing Modality** scenarios where one or both modalities might be degraded or unavailable.
+- **Robust Feature Alignment**: 
+  - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
+  - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
+- Utilizes trained prompts through input-level as Key and Value in cross-attention mechanisms for modality interaction.
+  - **Act Is..**:
+    - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
+    - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
+       - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
+       - Learnable prompt tokens from the **Input Level Integration**.      
 
-- **Why it matters**:
-  - **Enhanced Cross-Modal Information Flow**:
-     - Prompts ensure that missing or noisy modality information is supplemented by the complementary modality.  
-     - This improves the robustness of the model, especially in **Uncertain Missing Modality** scenarios where one or both modalities might be degraded or unavailable.
-  - **Robust Feature Alignment**: 
-     - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
-     - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
-      
-- **Key Highlights**:
-  - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
-  - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
-     - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
-     - Learnable prompt tokens from the **Input Level Integration**.
-  - **Enhanced Fusion**:  
-     - Prompts act as contextual signals that bridge modality-specific representations, ensuring efficient cross-modal feature exchange.
 
 ### **3️⃣ Fusion Module**
 ![image](https://github.com/user-attachments/assets/b0ef7f20-3609-4b5b-b155-3d8c06de015d)
 
 The Fusion Module introduces **Cross-Attention** layers to effectively balance contributions from both modalities. This module resolves the natural imbalance caused by varying sequence lengths and noise levels in audio and visual data.
-
-- **Why it matters**:
-  - Aligns features from different modalities, ensuring mutual reinforcement and minimizing bias toward any single modality.
-  - Handles discrepancies in sequence lengths (e.g., longer audio sequences vs. shorter visual sequences) through flexible attention mechanisms.
-
+- Aligns features from different modalities, ensuring mutual reinforcement and minimizing bias toward any single modality.
+- Handles discrepancies in sequence lengths (e.g., longer audio sequences vs. shorter visual sequences) through flexible attention mechanisms.
+  
 - **Structure**:
   - Two separate **Cross-Attention layers**:
     - **Visual-to-Audio**: Visual embeddings are used as queries to retrieve relevant information from audio embeddings and their associated prompts.
     - **Audio-to-Visual**: Audio embeddings serve as queries to access complementary visual features and their prompts.
-
 
 ---
 
@@ -97,27 +89,21 @@ The Fusion Module introduces **Cross-Attention** layers to effectively balance c
 ---
 
 ## 🎯 **Training & Evaluation**
-### **Training**
+### **Training : Case-Wise Training**
 ![image](https://github.com/user-attachments/assets/83e9fd24-87c0-44aa-b883-b49fd75874e4)
-
+- Independent prompts are trained for 4 each case (e.g., Complete, Visual-Only, Audio-Only, Both Noise).
 - **4 Training Scenarios:**
   - ✅ Complete (Audio + Visual)
   - 🎥 Vision Only (Noisy Audio)
   - 🎵 Audio Only (Noisy Visual)
   - ❌ Noise to Both (Noisy Audio + Visual)
 
-```python
-python train.py --dataset UrbanSound8K-AV --epochs 50 --batch_size 16 --lr 1e-4
-```
 
-### **Evaluation**
+### **Evaluation : Unified Evaluation**
 ![image](https://github.com/user-attachments/assets/63c2fee6-42ed-4239-919b-d30afa48992e)
 
 - Uses **all learned prompts concatenated** to handle **Uncertain Missing Modality**.
-
-```python
-python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
-```
+- All learned prompts are combined for inference, ensuring robust performance in noisy and missing modality conditions.
 
 ---
 
@@ -183,6 +169,15 @@ cd Uncertain-Modality-AV
 pip install -r requirements.txt
 ```
 
+3️⃣ Training :
+```python
+python train.py --dataset UrbanSound8K-AV --epochs 50 --batch_size 16 --lr 1e-4
+```
+
+4️⃣ Eval : 
+```python
+python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
+```
 
 
 
