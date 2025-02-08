@@ -41,21 +41,17 @@ The framework is designed to address **Uncertain Missing Modality** scenarios us
 ### **1️⃣ Input-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/45f46dbf-0446-40fe-a42b-06257a1dc56a)
 
-**Description**: At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism allows the model to embed prior knowledge about modality-specific patterns (e.g., noise or missing data) directly into the input representation.
+At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism allows the model to embed prior knowledge about modality-specific patterns (e.g., noise or missing data) directly into the input representation.
 
 - **Why it matters**:
   - The prompts act as auxiliary inputs that encode modality-specific signals, such as noise patterns or missing modality indicators.
   - Ensures each modality's encoder processes enriched inputs with context about the data's state.
 
-- **Process**:
-  - Learnable tokens (`prompt_a` for audio, `prompt_v` for visual) are **replicated to match the batch size**.
-  - Tokens are **concatenated** with the input feature embeddings before being passed to modality-specific encoders.
-
 
 ### **2️⃣ Attention-Level Prompt Integration**
 ![image](https://github.com/user-attachments/assets/9b85d6c3-79b6-4c86-9271-53bbc0995710)
 
-**Description**: Prompts are incorporated into **Cross-Attention layers** during the fusion phase. These prompts serve as **Key** and **Value** inputs in the attention mechanism, enabling enhanced interaction between audio and visual modalities.
+Prompts are incorporated into **Cross-Attention layers** during the fusion phase. These prompts serve as **Key** and **Value** inputs in the attention mechanism, enabling enhanced interaction between audio and visual modalities.
 
 - **Why it matters**:
   - Prompts improve information flow between modalities, ensuring that missing or noisy inputs are supplemented by the available modality.
@@ -70,7 +66,7 @@ The framework is designed to address **Uncertain Missing Modality** scenarios us
 ### **3️⃣ Fusion Module**
 ![image](https://github.com/user-attachments/assets/b0ef7f20-3609-4b5b-b155-3d8c06de015d)
 
-**Description**: The Fusion Module introduces **Cross-Attention** layers to effectively balance contributions from both modalities. This module resolves the natural imbalance caused by varying sequence lengths and noise levels in audio and visual data.
+The Fusion Module introduces **Cross-Attention** layers to effectively balance contributions from both modalities. This module resolves the natural imbalance caused by varying sequence lengths and noise levels in audio and visual data.
 
 - **Why it matters**:
   - Aligns features from different modalities, ensuring mutual reinforcement and minimizing bias toward any single modality.
@@ -120,7 +116,9 @@ python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
 ---
 
 ## 📈 **Results**
+
 ### **Performance Comparison**
+
 | Case                     | Fine-Tuning (FT) | FT + Prompt Learning (PL) | Improvement |
 |--------------------------|------------------|----------------------------|-------------|
 | ✅ Complete               | 0.99            | 0.99                       | -           |
@@ -128,11 +126,47 @@ python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
 | 🎵 Audio Only (Noisy V)   | 0.83            | 0.86                       | +0.03       |
 | ❌ Noise to Both         | 0.71            | 0.80                       | +0.09       |
 
+#### **Key Insights:**
+1. **Complete Case**:  
+   - Both Fine-Tuning (FT) and Prompt Learning (PL) achieve near-perfect performance.  
+   - Indicates that Prompt Learning does not degrade performance in ideal conditions despite being computationally more efficient.
+
+2. **Vision Only (Noisy Audio)**:  
+   - PL demonstrates significant improvement (+0.10) over FT by leveraging visual features more effectively through cross-attention and prompts.  
+   - Highlights the robustness of PL in compensating for noisy audio data by emphasizing the complementary modality.
+
+3. **Audio Only (Noisy Visual)**:  
+   - Improvement is smaller (+0.03) but still notable.  
+   - Reflects that audio data inherently carries less noise sensitivity, and prompts enhance robustness without major dependency on visual data.
+
+4. **Noise to Both**:  
+   - PL provides a substantial gain (+0.09) in the most challenging scenario.  
+   - Demonstrates the ability of prompts to optimize cross-modal interactions, ensuring stable performance even under severe noise.
+
+
 ### **Resource Efficiency**
+
 | Method         | Total Memory (GiB) | Training Memory (GiB) | Memory Saving | Time per Epoch |
 |----------------|---------------------|-----------------------|---------------|----------------|
 | Fine-Tuning    | 95.12              | 93.89                | -             | 1 min          |
 | Prompt Learning| 17.85              | 13.62                | **82.3%**     | **2.4 sec**    |
+
+#### **Key Insights:**
+1. **Memory Usage**:  
+   - PL significantly reduces total memory usage by **82.3%**, lowering computational demands.  
+   - This is achieved by learning only a small set of prompt parameters, unlike FT, which updates the entire model.
+
+2. **Training Memory**:  
+   - PL uses **13.62 GiB** compared to **93.89 GiB** in FT.  
+   - Such drastic memory savings make PL scalable for larger datasets and models, particularly in resource-constrained environments.
+
+3. **Training Time**:  
+   - PL requires only **2.4 seconds per epoch**, a **96% reduction** compared to FT (1 minute per epoch).  
+   - This efficiency is particularly critical for large-scale or real-time applications where training time is a bottleneck.
+
+
+### 📊 **Overall Analysis**
+Prompt Learning (PL) not only achieves competitive or superior performance compared to Fine-Tuning (FT) in noisy and missing modality scenarios but also drastically improves computational efficiency. These results establish PL as a practical and scalable solution for multimodal learning in resource-constrained or real-world environments.
 
 ---
 
