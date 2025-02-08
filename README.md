@@ -133,19 +133,19 @@ python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
 | ❌ Noise to Both         | 0.71            | 0.80                       | +0.09       |
 
 #### **Key Insights:**
-1. **Complete Case**:  
+1. ✅ **Complete Case**:  
    - Both Fine-Tuning (FT) and Prompt Learning (PL) achieve near-perfect performance.  
    - Indicates that Prompt Learning does not degrade performance in ideal conditions despite being computationally more efficient.
 
-2. **Vision Only (Noisy Audio)**:  
+2. 🎥 **Vision Only (Noisy Audio)**:  
    - PL demonstrates significant improvement (+0.10) over FT by leveraging visual features more effectively through cross-attention and prompts.  
    - Highlights the robustness of PL in compensating for noisy audio data by emphasizing the complementary modality.
 
-3. **Audio Only (Noisy Visual)**:  
+3. 🎵 **Audio Only (Noisy Visual)**:  
    - Improvement is smaller (+0.03) but still notable.  
    - Reflects that audio data inherently carries less noise sensitivity, and prompts enhance robustness without major dependency on visual data.
 
-4. **Noise to Both**:  
+4. ❌ **Noise to Both**:  
    - PL provides a substantial gain (+0.09) in the most challenging scenario.  
    - Demonstrates the ability of prompts to optimize cross-modal interactions, ensuring stable performance even under severe noise.
 
@@ -158,21 +158,17 @@ python evaluation.py --dataset UrbanSound8K-AV --case noise_to_both
 | Prompt Learning| 17.85              | 13.62                | **82.3%**     | **2.4 sec**    |
 
 #### **Key Insights:**
-1. **Memory Usage**:  
+1. 💾 **Memory Usage**:  
    - PL significantly reduces total memory usage by **82.3%**, lowering computational demands.  
    - This is achieved by learning only a small set of prompt parameters, unlike FT, which updates the entire model.
 
-2. **Training Memory**:  
+2. 📱 **Training Memory**:  
    - PL uses **13.62 GiB** compared to **93.89 GiB** in FT.  
    - Such drastic memory savings make PL scalable for larger datasets and models, particularly in resource-constrained environments.
 
-3. **Training Time**:  
+3. ⏰ **Training Time**:  
    - PL requires only **2.4 seconds per epoch**, a **96% reduction** compared to FT (1 minute per epoch).  
    - This efficiency is particularly critical for large-scale or real-time applications where training time is a bottleneck.
-
-
-### 📊 **Overall Analysis**
-Prompt Learning (PL) not only achieves competitive or superior performance compared to Fine-Tuning (FT) in noisy and missing modality scenarios but also drastically improves computational efficiency. These results establish PL as a practical and scalable solution for multimodal learning in resource-constrained or real-world environments.
 
 ---
 
