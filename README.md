@@ -55,14 +55,11 @@ Prompts from the **Input Level** stage are utilized as **Key** and **Value** inp
 
 - **Why it matters**:
   - **Enhanced Cross-Modal Information Flow**:
-   - Prompts ensure that missing or noisy modality information is supplemented by the complementary modality.  
-   - This improves the robustness of the model, especially in **Uncertain Missing Modality** scenarios where one or both modalities might be degraded or unavailable.
-  - **Dynamic Attention Weight Adjustment**:
-   - By including prompts in the attention mechanism, the model dynamically adjusts attention weights based on the **quality** and **completeness** of input data.  
-   - This allows the model to prioritize the modality with better signal quality while still leveraging noisy or incomplete features.
+     - Prompts ensure that missing or noisy modality information is supplemented by the complementary modality.  
+     - This improves the robustness of the model, especially in **Uncertain Missing Modality** scenarios where one or both modalities might be degraded or unavailable.
   - **Robust Feature Alignment**: 
-   - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
-   - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
+     - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
+     - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
 - **Key Highlights**:
   - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
   - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
