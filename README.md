@@ -60,13 +60,14 @@ Prompts from the **Input Level** stage are utilized as **Key** and **Value** inp
   - **Robust Feature Alignment**: 
      - Prompts facilitate better alignment between modalities by acting as an intermediary that strengthens the representation of shared information.  
      - This ensures that even when one modality is compromised, the overall feature alignment remains strong.
+      
 - **Key Highlights**:
   - **Query**: The Query originates from one modality's embeddings (e.g., audio embeddings in Audio-to-Visual Cross-Attention or visual embeddings in Visual-to-Audio Cross-Attention).
   - **Key & Value**: Combines the corresponding modality embeddings and learnable prompt tokens.
      - Corresponding modality embeddings (e.g., audio embeddings for Visual-to-Audio attention).  
      - Learnable prompt tokens from the **Input Level Integration**.
   - **Enhanced Fusion**:  
-   - Prompts act as contextual signals that bridge modality-specific representations, ensuring efficient cross-modal feature exchange.
+     - Prompts act as contextual signals that bridge modality-specific representations, ensuring efficient cross-modal feature exchange.
 
 ### **3️⃣ Fusion Module**
 ![image](https://github.com/user-attachments/assets/b0ef7f20-3609-4b5b-b155-3d8c06de015d)
