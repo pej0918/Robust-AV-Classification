@@ -61,7 +61,8 @@ The Fusion Module introduces **Cross-Attention** layers to balance contributions
   - **Audio-to-Visual Attention**: Audio embeddings query visual embeddings and their prompts.
 
 ### **4️⃣ Prompt Token Integration (Input + Attention Combination)**
-![image](https://github.com/user-attachments/assets/7974afdc-a974-4622-a173-56e8684f6dde)
+![image](https://github.com/user-attachments/assets/b187e493-f98a-42c6-9fcb-89bd7daba6f1)
+
 
 This unified approach combines strengths from both Input-Level and Attention-Level Integration:
 - At the **Input Level**, learnable tokens enhance input representations with prior knowledge about noise and modality-specific characteristics.
@@ -83,7 +84,8 @@ This combination ensures robust multimodal processing under uncertain conditions
 
 ## 🎯 **Training & Evaluation**
 ### **Training : Case-Wise Training**
-![image](https://github.com/user-attachments/assets/83e9fd24-87c0-44aa-b883-b49fd75874e4)
+![image](https://github.com/user-attachments/assets/3e50f577-006d-435e-bae6-ce80c411f276)
+
 - Independent prompts are trained for 4 each case (e.g., Complete, Visual-Only, Audio-Only, Both Noise).
 - **4 Training Scenarios:**
   - ✅ Complete (Audio + Visual)
@@ -95,7 +97,7 @@ python train.py --dataset UrbanSound8K-AV --epochs 50 --batch_size 16 --lr 1e-4
 ```
 
 ### **Evaluation : Unified Evaluation**
-![image](https://github.com/user-attachments/assets/63c2fee6-42ed-4239-919b-d30afa48992e)
+![image](https://github.com/user-attachments/assets/d665ca8e-e5d9-43c8-bc54-945cbf025442)
 
 - Uses **all learned prompts concatenated** to handle **Uncertain Missing Modality**.
 - All learned prompts are combined for inference, ensuring robust performance in noisy and missing modality conditions.
