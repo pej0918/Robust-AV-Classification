@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/5a80b4ca-b18b-4c0f-b707-64bbc5c3864c)# **Uncertain Missing Modality Audio-Visual Classification Framework**
+# **Uncertain Missing Modality Audio-Visual Classification Framework**
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
@@ -28,7 +28,7 @@ The framework addresses **Uncertain Missing Modality** scenarios through a robus
 
 
 ### **1️⃣ Input-Level Prompt Integration**
-![image](https://github.com/user-attachments/assets/4cc144f8-fe43-4224-922a-db59b5b742af)
+![image](https://github.com/user-attachments/assets/85dac187-b53d-4904-888d-22e66427451f)
 
 
 At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism embeds prior knowledge about modality-specific patterns (e.g., noise or missing data) into the input representation.
