@@ -1,4 +1,4 @@
-# **Uncertain Missing Modality Audio-Visual Classification Framework**
+![image](https://github.com/user-attachments/assets/5a80b4ca-b18b-4c0f-b707-64bbc5c3864c)# **Uncertain Missing Modality Audio-Visual Classification Framework**
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
@@ -28,7 +28,8 @@ The framework addresses **Uncertain Missing Modality** scenarios through a robus
 
 
 ### **1️⃣ Input-Level Prompt Integration**
-![image](https://github.com/user-attachments/assets/45f46dbf-0446-40fe-a42b-06257a1dc56a)
+![image](https://github.com/user-attachments/assets/4cc144f8-fe43-4224-922a-db59b5b742af)
+
 
 At the input stage, **learnable prompt tokens** are concatenated directly with the input features of each modality (audio and visual). This mechanism embeds prior knowledge about modality-specific patterns (e.g., noise or missing data) into the input representation.
 - **Key Benefits**:
@@ -36,7 +37,8 @@ At the input stage, **learnable prompt tokens** are concatenated directly with t
   - Each modality's encoder processes enriched inputs with context about the data's state.
 
 ### **2️⃣ Attention-Level Prompt Integration**
-![image](https://github.com/user-attachments/assets/9b85d6c3-79b6-4c86-9271-53bbc0995710)
+![image](https://github.com/user-attachments/assets/ae03360a-faf8-40a1-8c1b-d696b06f2d14)
+
 
 Prompts from the **Input Level** stage are used as **Key** and **Value** inputs in the **Cross-Attention** mechanism during the fusion phase. This enables enhanced interaction between audio and visual modalities by leveraging learnable tokens and modality-specific embeddings.
 - **Key Benefits**:
